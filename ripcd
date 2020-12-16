@@ -1,0 +1,55 @@
+#!/bin/bash
+
+ABCDE_ARGS=""
+RIP_FOLDER="$HOME/tmp/rip"
+
+
+## Functions
+
+ripped_disc_dir()
+{
+    # We've no way of asking abcde where it put the files, so we assume
+    # it's the most recently modified directory in the music folder.
+    find $RIP_FOLDER -type d -print0 | \
+        xargs -0 stat --format '%Y:%n' | \
+        sort -nr | \
+        cut -d : -f 2- | \
+        head -n 1
+}
+
+
+read_tag()
+{
+    local tag="$1"
+    local file="$2"
+    metaflac --show-tag=$tag "$file"
+}
+
+
+ensure_genre_set()
+{
+    local dir="$(ripped_disc_dir)"
+    local first_file="$(find "$dir" -type f -name \*.flac| head -n 1)"
+    if [ -z "$(read_tag GENRE "$first_file")" ]; then
+        echo "Genre not set: $(dirname "${first_file##${RIP_FOLDER}/}")"
+        read -p "Enter genre for disc: " GENRE
+        metaflac --set-tag GENRE="$GENRE" "$dir"/*flac
+    fi
+}
+
+
+## Main program
+
+set -e
+
+mkdir -p "$RIP_FOLDER"
+cd "$RIP_FOLDER"
+
+read -p "Enter disc number if a multi-disc album (if not, leave blank): " DISC
+if [ -n "$DISC" ]; then
+    ABCDE_ARGS="$ABCDE_ARGS -W $DISC"
+fi
+
+abcde $ABCDE_ARGS
+
+ensure_genre_set
