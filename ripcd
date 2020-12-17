@@ -1,16 +1,20 @@
 #!/bin/bash
 
-ABCDE_ARGS=""
-RIP_FOLDER="$HOME/tmp/rip"
+OUTPUT_DIR="$HOME/tmp/rip"
+
+WHIPPER_ARGS="--prompt"
+DISC_TEMPLATE="%A/%d/%A - %d"
+TRACK_TEMPLATE="%A/%d/%t %n"
 
 
 ## Functions
 
 ripped_disc_dir()
 {
-    # We've no way of asking abcde where it put the files, so we assume
-    # it's the most recently modified directory in the music folder.
-    find $RIP_FOLDER -type d -print0 | \
+    # We've no easy way of knowing which folder we just ripped files to,
+    # so we assume it's the most recently modified directory in the output
+    # folder.
+    find $OUTPUT_DIR -type d -print0 | \
         xargs -0 stat --format '%Y:%n' | \
         sort -nr | \
         cut -d : -f 2- | \
@@ -31,7 +35,7 @@ ensure_genre_set()
     local dir="$(ripped_disc_dir)"
     local first_file="$(find "$dir" -type f -name \*.flac| head -n 1)"
     if [ -z "$(read_tag GENRE "$first_file")" ]; then
-        echo "Genre not set: $(dirname "${first_file##${RIP_FOLDER}/}")"
+        echo "Genre not set: $(dirname "${first_file##${OUTPUT_DIR}/}")"
         read -p "Enter genre for disc: " GENRE
         metaflac --set-tag GENRE="$GENRE" "$dir"/*flac
     fi
@@ -42,14 +46,14 @@ ensure_genre_set()
 
 set -e
 
-mkdir -p "$RIP_FOLDER"
-cd "$RIP_FOLDER"
+mkdir -p "$OUTPUT_DIR"
 
-read -p "Enter disc number if a multi-disc album (if not, leave blank): " DISC
-if [ -n "$DISC" ]; then
-    ABCDE_ARGS="$ABCDE_ARGS -W $DISC"
-fi
+whipper cd rip \
+    --output-directory "$OUTPUT_DIR" \
+    --disc-template "$DISC_TEMPLATE" \
+    --track-template "$TRACK_TEMPLATE" \
+    $WHIPPER_ARGS \
+    $*
 
-abcde $ABCDE_ARGS
-
+cd "$OUTPUT_DIR"
 ensure_genre_set
