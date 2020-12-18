@@ -21,6 +21,11 @@ Then, to rip each disc:
 
     $ ./ripcd
 
+Any arguments you pass to `ripcd` will get passed straight through to `whipper`. For example:
+
+    $ ./ripcd --unknown
+    $ ./ripcd --unknown --cdr
+
 [AccurateRip offset database]: http://www.accuraterip.com/driveoffsets.htm
 
 Features
