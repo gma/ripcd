@@ -47,3 +47,5 @@ Notes
 While recent versions of `whipper` support downloading album art, the versions that ship with Debian or via the Docker image haven't yet been updated.
 
 I'm not too bothered about this, as I download album art with with https://beets.io instead. Beets is a fully fledged music library management (and tagging) tool, and is well worth checking out.
+
+The scripts that I use to copy ripped FLAC files to my NAS (`sync`), and then import them into the Beets library on my NAS (`import`) are also included in this repository. I run `sync` on the computer where I run `ripcd`, and copy `import` to my NAS (where Beets is installed).
