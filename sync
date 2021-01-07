@@ -66,6 +66,10 @@ for DISC in $(find "$RIPPED" -mindepth 2 -maxdepth 2 -type d); do
         echo "Skipping '$DISC'" 1>&2
         continue
     fi
+    if ! [ -f "$DISC"/*.cue ]; then
+        echo "Skipping '$DISC' (ripping in progress)" 1>&2
+        continue
+    fi
     make_release_id_file
     remove_rip_cruft
     sync_album
