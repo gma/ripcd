@@ -36,7 +36,11 @@ ensure_genre_set()
     local first_file="$(find "$dir" -type f -name \*.flac| head -n 1)"
     if [ -z "$(read_tag GENRE "$first_file")" ]; then
         echo "Genre not set: $(dirname "${first_file##${OUTPUT_DIR}/}")"
-        read -p "Enter genre for disc: " GENRE
+        if [ -z "$GENRE" ]; then
+            read -p "Enter genre for disc: " GENRE
+        else
+            echo "Setting genre to '$GENRE'"
+        fi
         metaflac --set-tag GENRE="$GENRE" "$dir"/*flac
     fi
 }
