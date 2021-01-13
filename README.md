@@ -8,7 +8,7 @@ ripcd
 Usage
 -----
 
-Before your first run:
+Before your first run, stick a popular disc in the drive (i.e. one that's likely to be in the AccurateRip database) and then run:
 
     $ whipper drive analyze
     $ whipper drive list
