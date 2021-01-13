@@ -15,7 +15,7 @@ Before your first run:
 
 Then lookup your drive's offset in the [AccurateRip offset database], before running:
 
-    $ whipper find -o <offset>
+    $ whipper offset find -o <offset>
 
 Then, to rip each disc:
 
