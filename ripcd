@@ -30,19 +30,18 @@ read_tag()
 }
 
 
-ensure_genre_set()
+set_genre()
 {
-    local dir="$(ripped_disc_dir)"
-    local first_file="$(find "$dir" -type f -name \*.flac| head -n 1)"
-    if [ -z "$(read_tag GENRE "$first_file")" ]; then
-        echo "Genre not set: $(dirname "${first_file##${OUTPUT_DIR}/}")"
-        if [ -z "$GENRE" ]; then
-            read -p "Enter genre for disc: " GENRE
-        else
-            echo "Setting genre to '$GENRE'"
-        fi
-        metaflac --set-tag GENRE="$GENRE" "$dir"/*flac
+    local dir="$1"
+    local genre
+    if [ -z "$GENRES" ]; then
+        read -p "Enter genres for disc (separated by semi-colons): " GENRES
     fi
+    IFS=";"
+    for genre in $GENRES; do
+        metaflac --set-tag GENRE="$genre" "$dir"/*flac
+    done
+    unset IFS
 }
 
 
@@ -60,4 +59,4 @@ whipper cd rip \
     $*
 
 cd "$OUTPUT_DIR"
-ensure_genre_set
+set_genre "$(ripped_disc_dir)"
