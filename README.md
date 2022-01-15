@@ -8,14 +8,14 @@ ripcd
 Usage
 -----
 
-Before your first run, stick a popular disc in the drive (i.e. one that's likely to be in the AccurateRip database) and then run:
+Before your first run, stick a popular disc in the drive (one that's in the AccurateRip database) and then run:
 
     $ whipper drive analyze
     $ whipper drive list
 
-Then lookup your drive's offset in the [AccurateRip offset database], before running:
+Now lookup your drive's offset in the [AccurateRip offset database] and run:
 
-    $ whipper offset find -o <offset>
+    $ whipper offset find -o <offset>  # include leading + if it's positive
 
 Then, to rip each disc:
 
