@@ -11,19 +11,20 @@ IMPORTS="/mnt/vault/Media/Music/import"
 
 artist()
 {
-    basename $(dirname $@)
+    basename "$(dirname "$@")"
 }
 
 
 album()
 {
-    basename $@
+    basename "$@"
 }
 
 
 make_release_id_file()
 {
-    local flac="$(find "$DISC" -name \*.flac | head -n 1)"
+    local flac
+    flac="$(find "$DISC" -name \*.flac | head -n 1)"
     echo -n "Getting MusicBrainz ID from '$(basename "$flac")' ... "
     metaflac --show-tag MUSICBRAINZ_ALBUMID "$flac" | sed 's,.*=,,' \
         > "$DISC"/release-id
@@ -49,7 +50,7 @@ archive_local_copy()
     echo -n "Archiving $(album "$DISC") locally ... "
     mkdir -p "$ARCHIVED/$(artist "$DISC")"
     mv "$DISC" "$ARCHIVED/$(artist "$DISC")/"
-    rmdir "$(dirname $DISC)" 2>/dev/null || true
+    rmdir "$(dirname "$DISC")" 2>/dev/null || true
     echo "ok"
 }
 
@@ -62,7 +63,7 @@ IFS="
 "
 
 for DISC in $(find "$RIPPED" -mindepth 2 -maxdepth 2 -type d); do
-    if [ "$(artist $DISC)" = "Unknown Artist" ]; then
+    if [ "$(artist "$DISC")" = "Unknown Artist" ]; then
         echo "Skipping '$DISC'" 1>&2
         continue
     fi

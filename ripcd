@@ -14,7 +14,7 @@ ripped_disc_dir()
     # We've no easy way of knowing which folder we just ripped files to,
     # so we assume it's the most recently modified directory in the output
     # folder.
-    find $OUTPUT_DIR -type d -print0 | \
+    find "$OUTPUT_DIR" -type d -print0 | \
         xargs -0 stat --format '%Y:%n' | \
         sort -nr | \
         cut -d : -f 2- | \
@@ -26,7 +26,7 @@ read_tag()
 {
     local tag="$1"
     local file="$2"
-    metaflac --show-tag=$tag "$file"
+    metaflac --show-tag="$tag" "$file"
 }
 
 
@@ -35,7 +35,7 @@ set_genre()
     local dir="$1"
     local genre
     if [ -z "$GENRES" ]; then
-        read -p "Enter genres for disc (separated by semi-colons): " GENRES
+        read -r -p "Enter genres for disc (separated by semi-colons): " GENRES
     fi
     IFS=";"
     for genre in $GENRES; do
@@ -55,8 +55,8 @@ whipper cd rip \
     --output-directory "$OUTPUT_DIR" \
     --disc-template "$DISC_TEMPLATE" \
     --track-template "$TRACK_TEMPLATE" \
-    $WHIPPER_ARGS \
-    $*
+    "$WHIPPER_ARGS" \
+    "$@"
 
 cd "$OUTPUT_DIR"
 set_genre "$(ripped_disc_dir)"

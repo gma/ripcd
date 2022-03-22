@@ -10,7 +10,7 @@ set -e
 
 for RELEASE_FILE in $(find "$IMPORT_DIR" -name release-id); do
     IMPORT_OPTS=(--search-id=$(cat "$RELEASE_FILE"))
-    DISC_DIR="$(dirname $RELEASE_FILE)"
+    DISC_DIR="$(dirname "$RELEASE_FILE")"
     if [ -f "$DISC_DIR/comp" ]; then
         IMPORT_OPTS+=(--set=comp=1)
     fi
