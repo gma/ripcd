@@ -67,7 +67,7 @@ for DISC in $(find "$RIPPED" -mindepth 2 -maxdepth 2 -type d); do
         echo "Skipping '$DISC'" 1>&2
         continue
     fi
-    if ! [ -f "$DISC"/*.cue ]; then
+    if [ "$(find "$DISC" -name \*.cue | wc -m)" -gt 0 ]; then
         echo "Skipping '$DISC' (ripping in progress)" 1>&2
         continue
     fi
