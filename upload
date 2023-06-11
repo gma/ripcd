@@ -41,7 +41,7 @@ remove_rip_cruft()
 
 sync_album()
 {
-    rsync -av "$DISC" "$HOST:'$IMPORTS'/"
+    rsync -av "$DISC" "$HOST:$IMPORTS/"
 }
 
 
