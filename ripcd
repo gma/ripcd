@@ -45,13 +45,24 @@ set_genre()
 }
 
 
+function whipper_container()
+{
+
+    docker run -ti --rm --device=/dev/cdrom \
+        --mount type=bind,source=/home/graham/.config/whipper,target=/home/worker/.config/whipper \
+        --mount type=bind,source="${OUTPUT_DIR}",target=/output \
+        whipperteam/whipper \
+        "$@"
+}
+
+
 ## Main program
 
 set -e
 
 mkdir -p "$OUTPUT_DIR"
 
-whipper cd rip \
+whipper_container cd rip \
     --output-directory "$OUTPUT_DIR" \
     --disc-template "$DISC_TEMPLATE" \
     --track-template "$TRACK_TEMPLATE" \
