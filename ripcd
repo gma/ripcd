@@ -56,7 +56,7 @@ whipper cd rip \
     --disc-template "$DISC_TEMPLATE" \
     --track-template "$TRACK_TEMPLATE" \
     "$WHIPPER_ARGS" \
-    "$@"
+    "$@" || true
 
 cd "$OUTPUT_DIR"
 set_genre "$(ripped_disc_dir)"
