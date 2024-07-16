@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMPORT_DIR="/mnt/vault/Media/Music/import"
+IMPORT_DIR="/mnt/vault/Media/beets-import"
 
 IFS="
 "

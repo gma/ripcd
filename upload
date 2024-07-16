@@ -4,7 +4,7 @@ RIPPED="$HOME/tmp/rip"
 ARCHIVED="$HOME/tmp/ripped-and-imported"
 
 HOST="nas"
-IMPORTS="/mnt/vault/Media/Music/import"
+IMPORTS="/mnt/vault/Media/beets-import"
 
 
 ## Functions
