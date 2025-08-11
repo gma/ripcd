@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 IMPORT_DIR="/mnt/vault/Media/beets-import"
 
