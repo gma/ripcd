@@ -5,7 +5,9 @@ IMPORT_DIR="${IMPORT_DIR:-/mnt/vault/Media/beets-import}"
 set -e
 [ -n "$DEBUG" ] && set -x
 
-while IFS= read -r -d '' RELEASE_FILE; do
+shopt -s globstar nullglob
+
+for RELEASE_FILE in "$IMPORT_DIR"/**/release-id; do
     IMPORT_OPTS=(--search-id="$(cat "$RELEASE_FILE")")
     DISC_DIR="$(dirname "$RELEASE_FILE")"
     if [ -f "$DISC_DIR/comp" ]; then
@@ -14,4 +16,4 @@ while IFS= read -r -d '' RELEASE_FILE; do
     beet import "${IMPORT_OPTS[@]}" "$DISC_DIR"
     rm -f "$DISC_DIR"/{release-id,comp}
     rmdir "$DISC_DIR"
-done < <(find "$IMPORT_DIR" -name release-id -print0)
+done
